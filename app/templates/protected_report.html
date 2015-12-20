@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+		<meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.css">
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+
+</head>
+<body>
+
+<p> Welcome {{user}}</p>
+{# <div id="chart"></div> 
+<div class="btn-group" role="group" aria-label="...">
+  <button type="button" class="btn btn-default" onclick='document.getElementById("sorted-chart").style.display="none"'>Hide Sorted Order</button>
+  <button type="button" class="btn btn-default" onclick='document.getElementById("sorted-chart").style.display="block"'>Show Sorted Order</button>
+</div>
+#}
+
+<div id="sorted-chart"></div>
+<ul style="padding:2em">
+	<li>Average: {{average}}</li>
+	<li>Standard Deviation: {{standard_deviation}}</li>
+	<li>Skew: {{skew}}</li>
+	<li>Kurtosis: {{kurtosis}}</li>
+</ul>
+
+<div class="container">
+  <h2>Bordered Table</h2>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Date Created</th>
+        <th>Time Elapsed</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for datum,time_elapsed in data %}
+      <tr>
+      	<td>{{datum.name}}</td>
+      	<td>{{datum.email}}</td>
+      	<td>{{datum.date_created}}</td>
+      	<td>{{time_elapsed}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+<script>
+	var time_elapsed = JSON.parse({{time_elapsed|tojson}});	
+	
+	var chart = c3.generate({
+		bindto:"#chart",
+	    data: {
+	        columns: [
+	        	time_elapsed
+	        ],
+	        type: 'bar'
+	    },
+	    bar: {
+	        width: {
+	            ratio: 0.5 // this makes bar width 50% of length between ticks
+	        }
+	        // or
+	        //width: 100 // this makes bar width 100px
+	    },
+	    axis:{
+	    	y:{
+	    		label:"Number Of Days Since Claim Was Started"
+	    	}
+	    }
+	});
+</script>
+<script>
+	var sorted_time_elapsed = JSON.parse({{sorted_time_elapsed|tojson}});	
+	
+	var chart = c3.generate({
+		bindto:"#sorted-chart",
+	    data: {
+	        columns: [
+	        	sorted_time_elapsed
+	        ],
+	        type: 'bar'
+	    },
+	    bar: {
+	        width: {
+	            ratio: 0.5 // this makes bar width 50% of length between ticks
+	        }
+	        // or
+	        //width: 100 // this makes bar width 100px
+	    },
+	    axis:{
+	    	y:{
+	    		label:"Number Of Days Since Claim Was Started"
+	    	}
+	    }
+	});
+</script>
+</body>
+</html>
