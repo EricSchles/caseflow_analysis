@@ -42,7 +42,7 @@ class Start(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     case_id = db.Column(db.Integer,db.ForeignKey("case.id"))
     date_created = db.Column(db.DateTime)
-
+    
     def __init__(self,date_created,case_id):
         self.date_created = date_created
         self.case_id = case_id
